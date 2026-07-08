@@ -1,0 +1,47 @@
+timestamp,class_name,confidence,image_path
+2026-07-08_19-43-01,cat,0.64,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-01_cat_0.64.jpg
+2026-07-08_19-43-02,cat,0.7,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-02_cat_0.70.jpg
+2026-07-08_19-43-02,cat,0.68,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-02_cat_0.68.jpg
+2026-07-08_19-43-02,cat,0.58,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-02_cat_0.58.jpg
+2026-07-08_19-43-02,person,0.65,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-02_person_0.65.jpg
+2026-07-08_19-43-03,toothbrush,0.57,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-03_toothbrush_0.57.jpg
+2026-07-08_19-43-03,cat,0.56,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-03_cat_0.56.jpg
+2026-07-08_19-43-03,cat,0.58,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-03_cat_0.58.jpg
+2026-07-08_19-43-04,hot dog,0.63,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-04_hot dog_0.63.jpg
+2026-07-08_19-43-04,person,0.53,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-04_person_0.53.jpg
+2026-07-08_19-43-04,person,0.74,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-43-04_person_0.74.jpg
+2026-07-08_19-48-23,cat,0.56,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-48-23_cat_0.56.jpg
+2026-07-08_19-48-23,hot dog,0.52,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-48-23_hot dog_0.52.jpg
+2026-07-08_19-48-26,cat,0.54,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-48-26_cat_0.54.jpg
+2026-07-08_19-48-27,sink,0.62,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-48-27_sink_0.62.jpg
+2026-07-08_19-48-28,remote,0.54,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-48-28_remote_0.54.jpg
+2026-07-08_19-58-23,person,0.56,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-23_person_0.56.jpg
+2026-07-08_19-58-27,remote,0.68,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-27_remote_0.68.jpg
+2026-07-08_19-58-27,person,0.61,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-27_person_0.61.jpg
+2026-07-08_19-58-28,cat,0.55,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-28_cat_0.55.jpg
+2026-07-08_19-58-28,person,0.61,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-28_person_0.61.jpg
+2026-07-08_19-58-29,cat,0.53,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-29_cat_0.53.jpg
+2026-07-08_19-58-30,person,0.54,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-30_person_0.54.jpg
+2026-07-08_19-58-32,cat,0.51,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-32_cat_0.51.jpg
+2026-07-08_19-58-32,person,0.51,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-32_person_0.51.jpg
+2026-07-08_19-58-32,cat,0.57,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-32_cat_0.57.jpg
+2026-07-08_19-58-32,person,0.53,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-32_person_0.53.jpg
+2026-07-08_19-58-32,cat,0.58,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-32_cat_0.58.jpg
+2026-07-08_19-58-32,person,0.54,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-32_person_0.54.jpg
+2026-07-08_19-58-34,toothbrush,0.51,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-34_toothbrush_0.51.jpg
+2026-07-08_19-58-36,person,0.56,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-36_person_0.56.jpg
+2026-07-08_19-58-37,cat,0.59,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-37_cat_0.59.jpg
+2026-07-08_19-58-39,person,0.5,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-39_person_0.50.jpg
+2026-07-08_19-58-39,cat,0.51,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-39_cat_0.51.jpg
+2026-07-08_19-58-39,person,0.51,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-39_person_0.51.jpg
+2026-07-08_19-58-39,cat,0.65,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-39_cat_0.65.jpg
+2026-07-08_19-58-40,person,0.52,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-40_person_0.52.jpg
+2026-07-08_19-58-41,cat,0.52,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-41_cat_0.52.jpg
+2026-07-08_19-58-42,person,0.62,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_19-58-42_person_0.62.jpg
+2026-07-08_20-33-45,remote,0.63,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_20-33-45_remote_0.63.jpg
+2026-07-08_20-33-45,cell phone,0.52,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_20-33-45_cell phone_0.52.jpg
+2026-07-08_20-33-45,remote,0.77,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_20-33-45_remote_0.77.jpg
+2026-07-08_20-33-45,person,0.66,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_20-33-45_person_0.66.jpg
+2026-07-08_20-33-45,remote,0.62,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_20-33-45_remote_0.62.jpg
+2026-07-08_20-33-46,person,0.66,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_20-33-46_person_0.66.jpg
+2026-07-08_20-37-52,person,0.6,C:\Users\User\Desktop\AI-Traffic-Intelligence-Platform\ai\camera\logs\images\2026-07-08_20-37-52_person_0.60.jpg
