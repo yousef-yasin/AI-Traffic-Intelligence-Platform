@@ -319,20 +319,26 @@ def get_potholes():
 
 @app.route("/road_stats")
 def road_stats():
+
     potholes = []
 
     try:
         with open("trip_data.csv", "r") as file:
+
             reader = csv.DictReader(file)
 
             for row in reader:
+
                 if row["class"].startswith("pothole"):
+
                     confidence = float(row["confidence"])
 
                     if confidence >= 0.80:
                         level = "high"
+
                     elif confidence >= 0.60:
                         level = "medium"
+
                     else:
                         level = "low"
 
@@ -341,11 +347,48 @@ def road_stats():
     except Exception as e:
         print(e)
 
+
+    high = potholes.count("high")
+    medium = potholes.count("medium")
+    low = potholes.count("low")
+
+
+    deductions = (
+        high * 10 +
+        medium * 5 +
+        low * 2
+    )
+
+    road_health = max(0, 100 - deductions)
+
+
+    if road_health >= 80:
+        status = "Excellent"
+
+    elif road_health >= 60:
+        status = "Good"
+
+    elif road_health >= 40:
+        status = "Fair"
+
+    else:
+        status = "Poor"
+
+
     return jsonify({
+
         "total": len(potholes),
-        "high": potholes.count("high"),
-        "medium": potholes.count("medium"),
-        "low": potholes.count("low")
+
+        "high": high,
+
+        "medium": medium,
+
+        "low": low,
+
+        "road_health": road_health,
+
+        "status": status
+
     })
 
 if __name__ == "__main__":
