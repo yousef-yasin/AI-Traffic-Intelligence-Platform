@@ -2,14 +2,21 @@ import cv2
 import time
 from flask import Flask, Response, jsonify, request
 from ultralytics import YOLO
+from trip_logger import save_trip_data
+import csv
 
 from detection_logger import save_detection
 from duplicate_filter import should_save
 
 app = Flask(__name__)
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
 CAMERA_INDEX = 0
-model = YOLO("yolov8n.pt")
+model = YOLO("ai/models/best.pt")
 
 latest_metrics = {
     "camera": "Disconnected",
@@ -64,8 +71,7 @@ def generate_frames():
         results = model(frame, verbose=False)
         annotated_frame = results[0].plot()
 
-        detections_count = len(results[0].boxes)
-        latest_metrics["detections"] = detections_count
+        latest_metrics["detections"] = len(results[0].boxes)
 
         if trip_running:
             frames_recorded += 1
@@ -78,6 +84,14 @@ def generate_frames():
                 if confidence >= 0.5:
                     if should_save(class_name):
                         save_detection(frame, class_name, confidence)
+
+                        save_trip_data(
+                            class_name,
+                            confidence,
+                            latest_metrics["latitude"],
+                            latest_metrics["longitude"],
+                            latest_metrics["speed"]
+                        )
                     break
 
         latest_metrics["trip"] = "Running" if trip_running else "Stopped"
@@ -128,9 +142,6 @@ def index():
                 .card { background:white; border-radius:18px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.08); }
                 img { width:100%; border-radius:16px; }
                 .status { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #e5e7eb; font-size:15px; }
-                .ok { color:#16a34a; font-weight:bold; }
-                .wait { color:#f59e0b; font-weight:bold; }
-                .danger { color:#dc2626; font-weight:bold; }
                 .buttons { display:flex; gap:10px; margin-bottom:20px; }
                 button { padding:12px 18px; border:none; border-radius:10px; color:white; font-weight:bold; cursor:pointer; font-size:14px; }
                 .start { background:#2563eb; }
@@ -223,7 +234,6 @@ def metrics():
 
 @app.route("/gps_update", methods=["POST"])
 def gps_update():
-
     data = request.get_json()
 
     print("==============================")
@@ -237,11 +247,9 @@ def gps_update():
             "message": "No GPS data received"
         }), 400
 
-
-    latitude = data.get("latitude")
-    longitude = data.get("longitude", data.get("lon"))
+    latitude = data.get("latitude") or data.get("Latitude")
+    longitude = data.get("longitude") or data.get("longitude ") or data.get("Longitude") or data.get("lon")
     speed = data.get("speed", 0)
-
 
     latest_metrics["gps"] = "Connected"
 
@@ -253,13 +261,17 @@ def gps_update():
 
     latest_metrics["speed"] = speed
 
+    print("latitude variable =", latitude)
+    print("longitude variable =", longitude)
 
+    print("latest_metrics =", latest_metrics)
     return jsonify({
         "status": "gps updated",
         "latitude": latest_metrics["latitude"],
         "longitude": latest_metrics["longitude"],
         "speed": latest_metrics["speed"]
     })
+
 
 @app.route("/start_trip", methods=["POST"])
 def start_trip():
@@ -283,6 +295,27 @@ def stop_trip():
 
     return jsonify({"status": "stopped"})
 
+@app.route("/potholes")
+def get_potholes():
+
+    potholes = []
+
+    try:
+        with open("trip_data.csv", "r") as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                if row["class"].startswith("pothole"):
+                    potholes.append({
+                        "latitude": float(row["latitude"]),
+                        "longitude": float(row["longitude"]),
+                        "confidence": float(row["confidence"])
+                    })
+
+    except Exception as e:
+        print(e)
+
+    return jsonify(potholes)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)

@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['pothole - v2 2026-04-05 5-47pm']
+
+roboflow:
+  workspace: yousef-9h4f3
+  project: pothole-detection-ehtnh-py6w2
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/yousef-9h4f3/pothole-detection-ehtnh-py6w2/dataset/1
