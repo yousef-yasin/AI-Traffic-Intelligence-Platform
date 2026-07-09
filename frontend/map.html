@@ -32,24 +32,56 @@
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
     const map = L.map('map').setView([32.03619239017797, 35.87200139587166], 17);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
+    function getSeverity(confidence) {
+        if (confidence >= 0.80) {
+            return {
+                level: "High Priority",
+                color: "red",
+                radius: 18
+            };
+        }
+
+        if (confidence >= 0.60) {
+            return {
+                level: "Medium Priority",
+                color: "orange",
+                radius: 14
+            };
+        }
+
+        return {
+            level: "Low Priority",
+            color: "green",
+            radius: 10
+        };
+    }
+
     fetch("http://127.0.0.1:5000/potholes")
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-
             data.forEach(point => {
-                L.marker([point.latitude, point.longitude])
-                    .addTo(map)
-                    .bindPopup(
-                        "Pothole<br>" +
-                        "Confidence: " + point.confidence
-                    );
+                const severity = getSeverity(point.confidence);
+
+                L.circleMarker([point.latitude, point.longitude], {
+                    radius: severity.radius,
+                    color: severity.color,
+                    fillColor: severity.color,
+                    fillOpacity: 0.7
+                })
+                .addTo(map)
+                .bindPopup(
+                    "<b>Road Damage</b><br>" +
+                    "Type: Pothole<br>" +
+                    "Priority: " + severity.level + "<br>" +
+                    "Confidence: " + point.confidence + "<br>" +
+                    "Latitude: " + point.latitude + "<br>" +
+                    "Longitude: " + point.longitude
+                );
             });
         });
 </script>
