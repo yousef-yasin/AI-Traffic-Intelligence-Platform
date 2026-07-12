@@ -8,7 +8,7 @@
 
 const USE_MOCK = true;
 const API_BASE = "http://localhost:3000/api"; // رابط الـ backend لاحقًا
-const MOCK_URL = "/JSYP-ROYOSO/frontend/data/mock.json"; // عدّلي المسار حسب مكان تشغيل XAMPP عندك
+const MOCK_URL = "../data/mock.json"; // عدّلي المسار حسب مكان تشغيل XAMPP عندك
 
 async function fetchDashboardData() {
   try {

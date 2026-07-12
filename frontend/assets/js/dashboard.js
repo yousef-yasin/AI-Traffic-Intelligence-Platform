@@ -10,16 +10,18 @@ const PRIORITY_LABELS = { high: "عالي", medium: "متوسط", low: "منخف
 
 document.addEventListener("DOMContentLoaded", async () => {
   const data = await fetchDashboardData();
-  if (!data) return;
-
-  renderKpis(data.kpis);
+  if (data) {
+    renderKpis(data.kpis);
   renderPriorityList(data.maintenancePriority, "priority-list", 3);
   renderPriorityList(data.maintenancePriority, "priority-list-full");
   renderMap(data.roads);
   renderAlerts(data.alerts);
   renderTrendChart(data.roadHealthTrend);
   renderDistributionChart(data.roadConditionDistribution);
-  renderIncidentsChart(data.incidentsByType);
+    renderIncidentsChart(data.incidentsByType);
+  }
+
+  initLiveRoadMonitoring();
 });
 
 /* ===== KPI Cards ===== */
@@ -192,4 +194,151 @@ function renderIncidentsChart(incidents) {
       scales: { x: { ticks: { font: { size: 10 } } } },
     },
   });
+}
+
+
+/* ===== Live AI road map (/road_stats + /potholes) ===== */
+const LIVE_API_BASE = "http://127.0.0.1:5000";
+let liveRoadMap = null;
+let livePotholeLayer = null;
+
+function severityFromConfidence(confidence) {
+  const value = Number(confidence) || 0;
+  if (value >= 0.80) return { key: "high", label: "أولوية عالية", color: "#ef4444", radius: 15 };
+  if (value >= 0.60) return { key: "medium", label: "أولوية متوسطة", color: "#f59e0b", radius: 12 };
+  return { key: "low", label: "أولوية منخفضة", color: "#22c55e", radius: 9 };
+}
+
+function initLiveRoadMonitoring() {
+  const mapElement = document.getElementById("road-map");
+  if (!mapElement || typeof L === "undefined") return;
+
+  // يمنع إنشاء خريطتين في حال كانت بيانات mock موجودة.
+  if (mapElement._leaflet_id) {
+    const oldMap = Object.values(window).find(v => v && v._container === mapElement);
+    try { oldMap && oldMap.remove(); } catch (_) {}
+    mapElement._leaflet_id = null;
+    mapElement.innerHTML = "";
+  }
+
+  liveRoadMap = L.map(mapElement).setView([32.03619239017797, 35.87200139587166], 16);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap",
+    maxZoom: 20,
+  }).addTo(liveRoadMap);
+  livePotholeLayer = L.layerGroup().addTo(liveRoadMap);
+
+  refreshLiveRoadDashboard();
+  setInterval(refreshLiveRoadDashboard, 3000);
+}
+
+async function refreshLiveRoadDashboard() {
+  await Promise.allSettled([loadLiveRoadStats(), loadLivePotholes()]);
+  const updateEl = document.getElementById("last-update");
+  if (updateEl) updateEl.textContent = new Date().toLocaleTimeString("ar-JO");
+}
+
+async function loadLiveRoadStats() {
+  try {
+    const response = await fetch(`${LIVE_API_BASE}/road_stats`, { cache: "no-store" });
+    if (!response.ok) throw new Error("road_stats unavailable");
+    const stats = await response.json();
+
+    setText("live-total", stats.total ?? 0);
+    setText("live-high", stats.high ?? 0);
+    setText("live-medium", stats.medium ?? 0);
+    setText("live-low", stats.low ?? 0);
+
+    const health = Math.max(0, Math.min(100, Number(stats.road_health ?? 100)));
+    setText("live-health", `${Math.round(health)}%`);
+    setText("live-status", translateRoadStatus(stats.status));
+    const ring = document.getElementById("health-ring");
+    if (ring) ring.style.background = `conic-gradient(${healthColor(health)} ${health}%, #e5e7eb 0)`;
+
+    const total = Number(stats.total) || 0;
+    const rate = total ? Math.round(((Number(stats.high) || 0) / total) * 100) : 0;
+    setText("high-rate", `${rate}%`);
+    const rateBar = document.getElementById("high-rate-bar");
+    if (rateBar) rateBar.style.width = `${rate}%`;
+  } catch (error) {
+    showMapMessage("شغّلي camera_stream.py لعرض البيانات المباشرة", false);
+  }
+}
+
+async function loadLivePotholes() {
+  try {
+    const response = await fetch(`${LIVE_API_BASE}/potholes`, { cache: "no-store" });
+    if (!response.ok) throw new Error("potholes unavailable");
+    const points = await response.json();
+    if (!Array.isArray(points)) return;
+
+    livePotholeLayer.clearLayers();
+    const bounds = [];
+    const priorityItems = [];
+
+    points.forEach((point, index) => {
+      const lat = Number(point.latitude);
+      const lng = Number(point.longitude);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+      const severity = severityFromConfidence(point.confidence);
+      L.circleMarker([lat, lng], {
+        radius: severity.radius,
+        color: "#fff",
+        weight: 2,
+        fillColor: severity.color,
+        fillOpacity: 0.88,
+      }).addTo(livePotholeLayer).bindPopup(`
+        <div dir="rtl" style="font-family:Cairo,sans-serif;min-width:170px">
+          <strong>ضرر في الطريق</strong><br>
+          النوع: حفرة<br>
+          الأولوية: ${severity.label}<br>
+          دقة الكشف: ${Math.round((Number(point.confidence) || 0) * 100)}%<br>
+          الإحداثيات: ${lat.toFixed(5)}, ${lng.toFixed(5)}
+        </div>`);
+
+      bounds.push([lat, lng]);
+      priorityItems.push({
+        roadName: point.road_name || point.street || `موقع الضرر ${index + 1}`,
+        score: Math.max(0, Math.round(100 - (Number(point.confidence) || 0) * 100)),
+        priority: severity.key,
+      });
+    });
+
+    if (bounds.length) {
+      liveRoadMap.fitBounds(bounds, { padding: [35, 35], maxZoom: 17 });
+      showMapMessage(`تم عرض ${bounds.length} موقع ضرر`, true);
+    } else {
+      showMapMessage("لا توجد أضرار مسجلة حاليًا", false);
+    }
+
+    priorityItems.sort((a, b) => a.score - b.score);
+    if (priorityItems.length) renderPriorityList(priorityItems, "priority-list", 5);
+  } catch (error) {
+    showMapMessage("تعذر الاتصال بخادم الذكاء الاصطناعي على المنفذ 5000", false);
+  }
+}
+
+function setText(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.textContent = value;
+}
+
+function translateRoadStatus(status) {
+  const labels = { Excellent: "ممتاز", Good: "جيد", Fair: "متوسط", Poor: "سيئ", Critical: "خطير" };
+  return labels[status] || status || "ممتاز";
+}
+
+function healthColor(value) {
+  if (value >= 80) return "#22c55e";
+  if (value >= 60) return "#f59e0b";
+  return "#ef4444";
+}
+
+function showMapMessage(message, autoHide) {
+  const element = document.getElementById("map-message");
+  if (!element) return;
+  element.textContent = message;
+  element.classList.remove("hidden");
+  if (autoHide) setTimeout(() => element.classList.add("hidden"), 1800);
 }
