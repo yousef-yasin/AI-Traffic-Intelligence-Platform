@@ -43,5 +43,12 @@
   --sidebar-width: 250px;
   --topbar-height: 68px;
 
-  --font-main: "Cairo", "Segoe UI", sans-serif;
+  /* Fonts: Latin-first stack, Arabic (Cairo) as fallback so both
+     languages render well from the same stylesheet */
+  --font-main: "Inter", "Cairo", "Segoe UI", sans-serif;
+}
+
+/* When the page is switched to Arabic (html[lang="ar"]) prefer Cairo */
+html[lang="ar"] {
+  --font-main: "Cairo", "Inter", "Segoe UI", sans-serif;
 }

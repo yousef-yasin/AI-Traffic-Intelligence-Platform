@@ -1,0 +1,46 @@
+{
+  "kpis": [
+    { "id": "road_health", "label": "مؤشر صحة الطريق", "value": 78, "max": 100, "status": "جيد", "trend": "up" },
+    { "id": "congestion", "label": "الازدحام العام", "value": 65, "max": 100, "status": "متوسط", "trend": "down" },
+    { "id": "safety", "label": "السلامة المرورية", "value": 70, "max": 100, "status": "جيد", "trend": "up" },
+    { "id": "incidents_today", "label": "الحوادث اليوم", "value": 24, "max": null, "status": "+12% عن أمس", "trend": "up" },
+    { "id": "maintenance_ratio", "label": "جاهزية الصيانة", "value": 87, "max": 100, "status": "من الميزانية", "trend": "up" }
+  ],
+
+  "roads": [
+    { "id": "r1", "name": "شارع الجامعة الأردنية", "healthScore": 45, "condition": "poor", "lat": 32.0142, "lng": 35.8719 },
+    { "id": "r2", "name": "شارع مكة", "healthScore": 52, "condition": "poor", "lat": 31.9640, "lng": 35.8590 },
+    { "id": "r3", "name": "شارع المدينة المنورة", "healthScore": 55, "condition": "average", "lat": 31.9800, "lng": 35.8890 },
+    { "id": "r4", "name": "شارع عبدالله الأول", "healthScore": 60, "condition": "average", "lat": 31.9550, "lng": 35.9200 },
+    { "id": "r5", "name": "شارع الاستقلال", "healthScore": 63, "condition": "good", "lat": 31.9450, "lng": 35.9330 }
+  ],
+
+  "maintenancePriority": [
+    { "roadId": "r1", "roadName": "شارع الجامعة الأردنية", "score": 45, "priority": "high" },
+    { "roadId": "r2", "roadName": "شارع مكة", "score": 52, "priority": "high" },
+    { "roadId": "r3", "roadName": "شارع المدينة المنورة", "score": 55, "priority": "medium" },
+    { "roadId": "r4", "roadName": "شارع عبدالله الأول", "score": 60, "priority": "medium" },
+    { "roadId": "r5", "roadName": "شارع الاستقلال", "score": 63, "priority": "low" }
+  ],
+
+  "roadHealthTrend": {
+    "labels": ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران"],
+    "values": [70, 72, 68, 74, 76, 78]
+  },
+
+  "roadConditionDistribution": {
+    "labels": ["ممتاز", "جيد", "متوسط", "سيء", "خطير"],
+    "values": [850, 1200, 500, 220, 72],
+    "total": 2842
+  },
+
+  "incidentsByType": {
+    "labels": ["حفر", "تشققات", "ازدحام", "حوادث", "إشارات معطلة"],
+    "values": [120, 95, 60, 24, 15]
+  },
+
+  "alerts": [
+    { "id": "a1", "type": "pothole", "title": "حفرة في الطريق", "location": "شارع المطار - باتجاه الشرق", "time": "منذ 30 دقيقة" },
+    { "id": "a2", "type": "congestion", "title": "ازدحام مروري", "location": "دوار المحطة", "time": "منذ 45 دقيقة" }
+  ]
+}

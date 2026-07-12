@@ -1,77 +1,113 @@
 # frontend
 
-داشبورد الحكومة + واجهة السائق (تكسي)، مبنية بـ **HTML/CSS/JS** مع **PHP** كـ templating
-(includes/components) — بدون أي framework.
+Government dashboard + driver (taxi) interface, built with **HTML/CSS/JS** and
+**PHP** as templating (includes/components) — no framework.
 
-## كيف تشغليه محليًا (XAMPP)
+**This version was rebuilt with English/LTR as the default language**, with a
+🌐 language toggle button in the navbar (and on the login/taxi screens) that
+switches the whole UI to Arabic/RTL and back, instantly, without a page reload.
 
-المشروع أصلًا داخل `D:\XAMPP\htdocs\JSYP-ROYOSO`، فبس شغّلي Apache من XAMPP وافتحي:
+## Running locally (XAMPP)
+
+The project lives at `D:\XAMPP\htdocs\JSYP-ROYOSO`, so just start Apache from
+XAMPP and open:
 
 ```
 http://localhost/JSYP-ROYOSO/frontend/login.php
 ```
 
-اختاري "حكومة" وبتوجهك على `dashboard/index.php`، أو "سائق" وبتوجهك على `taxi/index.php`.
+Pick "Government" and you'll land on `dashboard/index.php`, or "Driver" and
+you'll land on `taxi/index.php`.
 
-## البيانات (مهم)
+## How the bilingual (i18n) system works
 
-- كل الصفحات حاليًا بتقرأ من `data/mock.json` عن طريق `assets/js/api.js`.
-- لما يجهز الـ backend (Node.js — `index.js` بجذر المشروع)، بس غيّري بملف
-  `assets/js/api.js`:
+Everything lives in **`assets/js/i18n.js`**, loaded on every page before
+`api.js`/`dashboard.js`/`taxi.js`:
+
+- **`UI_STRINGS`** — translations for static chrome (menus, titles, buttons,
+  placeholders). Any element tagged `data-i18n="key"` gets its text replaced;
+  `data-i18n-placeholder="key"` does the same for input placeholders.
+- **`DATA_TRANSLATIONS`** — English/Arabic copies of the *dynamic* content
+  that comes from `data/mock.json` (KPI labels, road names, alerts, chart
+  labels...), keyed by the same `id`s used in `mock.json`. This keeps
+  `mock.json`'s shape completely untouched — the Frontend/Backend contract
+  described below still holds.
+- Clicking `#langBtn` calls `toggleLang()`, which:
+  1. flips `localStorage.jrip_lang` between `"en"`/`"ar"`
+  2. sets `<html lang>` and `<html dir>` (so the whole layout mirrors to
+     RTL automatically, no separate RTL stylesheet needed)
+  3. re-applies all `[data-i18n]` text
+  4. fires a `langchange` event that `dashboard.js`/`taxi.js` listen for, to
+     re-render the mock.json-driven parts of the page in the new language.
+- Language choice persists (via `localStorage`) across page navigations.
+
+If you add new static text: wrap it in `data-i18n="your_key"` and add
+`your_key` to **both** the `en` and `ar` blocks of `UI_STRINGS`. If you add
+new dynamic content in `mock.json`, add its translation to the matching
+section of `DATA_TRANSLATIONS`, keyed by that item's `id`.
+
+## Data (important)
+
+- All pages currently read from `data/mock.json` via `assets/js/api.js`.
+- Once the backend (Node.js — `index.js` at the project root) is ready, just
+  change `assets/js/api.js`:
   ```js
   const USE_MOCK = false;
-  const API_BASE = "http://localhost:3000/api"; // أو رابط السيرفر الفعلي
+  const API_BASE = "http://localhost:3000/api"; // or the real server URL
   ```
-  المهم يرجّع الـ backend نفس **شكل** الـ JSON الموجود بـ `mock.json` بالضبط، وإلا لازم تعدّلي
-  دوال العرض بـ `dashboard.js` / `taxi.js` معه.
+  The backend must return the exact same **shape** as `mock.json` — otherwise
+  you'll also need to update the render functions in `dashboard.js` /
+  `taxi.js`.
 
-## هيكلية الملفات
+## File structure
 
 ```
 frontend/
-├── login.php               → بوابة الدخول (حكومة / سائق)
+├── login.php                → login gate (Government / Driver), 🌐 toggle
 ├── includes/
-│   ├── sidebar.php          → السايدبار المشترك (يستخدم $activePage)
-│   ├── navbar.php            → الشريط العلوي المشترك (يستخدم $pageTitle)
-│   └── footer.php             → إغلاق HTML + روابط JS
+│   ├── sidebar.php           → shared sidebar (uses $activePage, i18n keys)
+│   ├── navbar.php             → shared topbar (uses $pageTitleKey, 🌐 toggle)
+│   └── footer.php              → closes HTML + shared JS includes
 │
 ├── dashboard/
-│   ├── index.php             → لوحة التحكم الرئيسية
-│   ├── monitoring.php         → حالة الطرق + التنبيهات
-│   ├── maintenance.php         → أولويات الصيانة الكاملة
-│   ├── reports.php              → الرسوم البيانية
-│   ├── settings.php              → إعدادات (placeholder)
+│   ├── index.php               → main dashboard
+│   ├── monitoring.php           → detailed road map + alerts
+│   ├── maintenance.php           → full maintenance priority list
+│   ├── reports.php                → charts
+│   ├── settings.php                → settings (placeholder)
 │   └── components/
-│       ├── cards.php            → كروت المؤشرات (KPIs)
-│       ├── map.php               → الخريطة + قائمة الأولويات المختصرة
-│       ├── chart.php              → الرسوم البيانية الثلاثة
-│       └── alerts.php              → قائمة التنبيهات
+│       ├── cards.php                → KPI cards
+│       ├── map.php                   → map + short priority list
+│       ├── chart.php                  → the three charts
+│       └── alerts.php                  → alerts list
 │
 ├── taxi/
-│   └── index.php              → واجهة السائق (حالة الطريق، زر الإبلاغ، تنبيهات قريبة)
+│   └── index.php               → driver interface (road status, report button, nearby alerts), 🌐 toggle
 │
 ├── assets/
 │   ├── css/
-│   │   ├── variables.css      → الألوان والمقاسات (عدّلي هون لو بدك تغيّري الهوية البصرية)
-│   │   ├── base.css            → reset + عناصر عامة (كروت، badges)
-│   │   ├── layout.css           → سايدبار/توب بار/الشبكة
-│   │   ├── dashboard.css         → تنسيقات خاصة بمكونات الداشبورد
-│   │   └── taxi.css               → تنسيقات واجهة السائق
+│   │   ├── variables.css       → colors/sizing (edit here to restyle)
+│   │   ├── base.css             → reset + generic elements (dir-agnostic)
+│   │   ├── layout.css            → sidebar/topbar/grid
+│   │   ├── dashboard.css          → dashboard component styles
+│   │   └── taxi.css                → driver interface styles
 │   └── js/
-│       ├── api.js               → طبقة جلب البيانات (mock الآن → API لاحقًا)
-│       ├── dashboard.js          → يرسم كل مكونات الداشبورد (كروت، خريطة، رسوم بيانية)
-│       └── taxi.js                → منطق واجهة السائق
+│       ├── i18n.js               → 🌐 translation + RTL/LTR switcher (load first)
+│       ├── api.js                 → data-fetching layer (mock now → API later)
+│       ├── dashboard.js            → renders all dashboard components
+│       └── taxi.js                  → driver interface logic
 │
 └── data/
-    └── mock.json               → ⚠️ العقد (contract) المتفق عليه بين Frontend وBackend
+    └── mock.json               → ⚠️ the contract agreed between Frontend and Backend
 ```
 
-## قواعد مهمة قبل ما تبنوا الـ backend
+## Rules to follow before building the backend
 
-1. أي endpoint بالـ backend لازم يرجّع نفس **شكل** البيانات الموجود بـ `mock.json` تمامًا
-   (نفس أسماء الحقول، نفس أنواع البيانات) — هيك التبديل من mock لـ API حقيقي بيصير بسطر واحد
-   بدون تعديل أي كود عرض.
-2. الخريطة تستخدم مكتبة **Leaflet** (مجانية، بدون API key) بدل Google Maps — أسهل وأسرع للهاكاثون.
-3. الرسوم البيانية تستخدم **Chart.js**.
-4. كل الصفحات جاهزة لدعم PHP `include` — إذا ضفتي صفحة جديدة، انسخي نفس الهيكل من
-   `dashboard/reports.php` (أبسط مثال).
+1. Any backend endpoint must return exactly the same **shape** as
+   `mock.json` (same field names, same data types) — that way switching from
+   mock to a real API is a one-line change with no view-layer edits.
+2. The map uses **Leaflet** (free, no API key) instead of Google Maps —
+   simpler and faster for a hackathon.
+3. Charts use **Chart.js**.
+4. Every page supports PHP `include` — if you add a new page, copy the same
+   structure from `dashboard/reports.php` (the simplest example).

@@ -1,10 +1,10 @@
-<!-- مكوّن قائمة التنبيهات الأخيرة -->
+<!-- Latest alerts component -->
 <div class="card">
   <div class="card-header">
-    <h2>أحدث التنبيهات</h2>
-    <a href="monitoring.php" class="link">عرض الكل</a>
+    <h2 data-i18n="latest_alerts">Latest Alerts</h2>
+    <a href="monitoring.php" class="link" data-i18n="view_all">View All</a>
   </div>
   <div id="alerts-list">
-    <!-- تُبنى ديناميكيًا عبر assets/js/dashboard.js -->
+    <!-- built dynamically via assets/js/dashboard.js -->
   </div>
 </div>
