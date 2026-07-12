@@ -1,14 +1,14 @@
 <?php
-$pageTitle = 'الصيانة';
+$pageTitleKey = 'page_title_maintenance';
 $activePage = 'maintenance';
 ?>
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JRIP — الصيانة</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>JRIP — Maintenance</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/variables.css">
 <link rel="stylesheet" href="../assets/css/base.css">
 <link rel="stylesheet" href="../assets/css/layout.css">
@@ -26,10 +26,10 @@ $activePage = 'maintenance';
 
     <div class="card">
       <div class="card-header">
-        <h2>كل الطرق - مرتبة حسب أولوية الصيانة</h2>
+        <h2 data-i18n="all_priority_title">All Roads - Sorted by Maintenance Priority</h2>
       </div>
       <ul class="priority-list" id="priority-list-full">
-        <!-- تُبنى ديناميكيًا عبر assets/js/dashboard.js (نفس بيانات mock.json كاملة) -->
+        <!-- built dynamically via assets/js/dashboard.js (full mock.json data) -->
       </ul>
     </div>
 

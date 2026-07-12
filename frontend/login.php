@@ -1,14 +1,14 @@
 <?php
-// login.php — بوابة الدخول لكل من الحكومة والسائقين
-// لاحقًا: يرسل بيانات الفورم لـ backend Node.js عبر POST ويحدد التوجيه (dashboard أو taxi)
+// login.php — entry gate for both government users and drivers
+// Later: submits the form to the Node.js backend via POST and routes accordingly
 ?>
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JRIP — تسجيل الدخول</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>JRIP — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/variables.css">
 <link rel="stylesheet" href="assets/css/base.css">
 <style>
@@ -26,6 +26,12 @@
     padding: var(--space-6);
     border-radius: var(--radius-lg);
     text-align: center;
+    position: relative;
+  }
+  .login-box .lang-toggle {
+    position: absolute;
+    top: var(--space-4);
+    inset-inline-end: var(--space-4);
   }
   .login-box .logo-mark {
     width: 48px; height: 48px;
@@ -45,7 +51,7 @@
     border-radius: var(--radius-sm);
     margin-bottom: var(--space-3);
   }
-  .login-box button {
+  .login-box button[type="submit"] {
     width: 100%;
     padding: 12px;
     border: none;
@@ -74,24 +80,26 @@
 <body>
 
   <div class="login-box">
-    <div class="logo-mark">J</div>
-    <h1>مرحبًا بك في JRIP</h1>
-    <p>سجّل الدخول لمتابعة حالة الطرق والقرارات الذكية</p>
+    <button id="langBtn" class="lang-toggle">🌐 عربي</button>
+    <div class="logo-mark">R</div>
+    <h1 data-i18n="login_title">Welcome to ROYOSO</h1>
+    <p data-i18n="login_subtitle">Sign in to track road conditions and smart decisions</p>
 
     <div class="role-switch">
-      <label><input type="radio" name="role" value="gov" checked> حكومة</label>
-      <label><input type="radio" name="role" value="taxi"> سائق</label>
+      <label><input type="radio" name="role" value="gov" checked> <span data-i18n="role_gov">Government</span></label>
+      <label><input type="radio" name="role" value="taxi"> <span data-i18n="role_taxi">Driver</span></label>
     </div>
 
     <form action="#" method="post" id="loginForm">
-      <input type="email" name="email" placeholder="البريد الإلكتروني" required>
-      <input type="password" name="password" placeholder="كلمة السر" required>
-      <button type="submit">تسجيل الدخول</button>
+      <input type="email" name="email" data-i18n-placeholder="email_placeholder" placeholder="Email" required>
+      <input type="password" name="password" data-i18n-placeholder="password_placeholder" placeholder="Password" required>
+      <button type="submit" data-i18n="login_button">Log In</button>
     </form>
   </div>
 
+<script src="assets/js/i18n.js"></script>
 <script>
-  // مبدئيًا: يوجّه حسب الدور المختار (لحد ما يجهز التحقق الحقيقي من backend)
+  // For now: route based on the selected role (until real backend auth is ready)
   document.getElementById('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
     const role = document.querySelector('input[name="role"]:checked').value;

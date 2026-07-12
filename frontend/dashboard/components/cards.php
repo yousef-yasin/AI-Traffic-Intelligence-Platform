@@ -1,6 +1,6 @@
-<!-- مكوّن كروت المؤشرات الرئيسية (صحة الطريق، الازدحام، السلامة...) -->
-<!-- المحتوى يُبنى ديناميكيًا من data/mock.json عبر assets/js/dashboard.js -->
+<!-- KPI cards component -->
+<!-- Content is rendered dynamically from data/mock.json via assets/js/dashboard.js -->
 <section class="kpi-grid" id="kpi-grid">
-  <!-- placeholder حتى يوصل fetch -->
-  <div class="kpi-card"><div class="kpi-label">جاري التحميل...</div></div>
+  <!-- placeholder until fetch resolves -->
+  <div class="kpi-card"><div class="kpi-label">Loading...</div></div>
 </section>

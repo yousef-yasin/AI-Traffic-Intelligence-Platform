@@ -8,11 +8,12 @@ html, body {
   height: 100%;
 }
 
+/* Direction now comes from the html[dir] attribute, toggled at runtime by
+   assets/js/i18n.js. Default document markup ships as dir="ltr" lang="en". */
 body {
   font-family: var(--font-main);
   background: var(--color-bg);
   color: var(--color-text);
-  direction: rtl;
   font-size: 14px;
   line-height: 1.6;
 }
@@ -91,3 +92,19 @@ h1, h2, h3 {
 .dot.average { background: var(--color-average); }
 .dot.poor { background: var(--color-poor); }
 .dot.critical { background: var(--color-critical); }
+
+/* Language toggle button (navbar) */
+.lang-toggle {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 12.5px;
+  cursor: pointer;
+  color: var(--color-text);
+}
+.lang-toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}

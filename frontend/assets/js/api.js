@@ -1,24 +1,25 @@
 /**
  * api.js
- * طبقة موحّدة لجلب البيانات.
- * حاليًا: بتقرأ من data/mock.json (بيانات وهمية).
- * لما يجهز الـ backend (Node.js): غيّري USE_MOCK لـ false وحطي رابط الـ API الصحيح بـ API_BASE.
- * شكل البيانات المتوقع من الـ API لازم يطابق mock.json بالضبط.
+ * Unified data-fetching layer.
+ * Currently: reads from data/mock.json (dummy data).
+ * Once the backend (Node.js) is ready: set USE_MOCK to false and point
+ * API_BASE at the real server. The API response shape must match
+ * mock.json exactly (see README).
  */
 
 const USE_MOCK = true;
-const API_BASE = "http://localhost:3000/api"; // رابط الـ backend لاحقًا
-const MOCK_URL = "../data/mock.json"; // عدّلي المسار حسب مكان تشغيل XAMPP عندك
+const API_BASE = "http://localhost:3000/api"; // backend URL, once ready
+const MOCK_URL = "/JSYP-ROYOSO/frontend/data/mock.json"; // adjust to your XAMPP path
 
 async function fetchDashboardData() {
   try {
     if (USE_MOCK) {
       const res = await fetch(MOCK_URL);
-      if (!res.ok) throw new Error("تعذر تحميل mock.json");
+      if (!res.ok) throw new Error("Could not load mock.json");
       return await res.json();
     }
     const res = await fetch(`${API_BASE}/dashboard`);
-    if (!res.ok) throw new Error("تعذر تحميل البيانات من الـ API");
+    if (!res.ok) throw new Error("Could not load data from the API");
     return await res.json();
   } catch (err) {
     console.error("[api.js] fetchDashboardData error:", err);
@@ -26,7 +27,7 @@ async function fetchDashboardData() {
   }
 }
 
-// دالة عامة لإرسال بلاغ جديد (تُستخدم لاحقًا من تطبيق التكسي)
+// Generic helper to submit a new incident report (used by the taxi app)
 async function postIncident(payload) {
   try {
     const res = await fetch(`${API_BASE}/incidents`, {

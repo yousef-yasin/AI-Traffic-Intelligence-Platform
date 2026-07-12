@@ -1,4 +1,4 @@
-/* تنسيقات خاصة بواجهة التكسي - هيكل أولي، تُبنى لاحقًا بالتفصيل */
+/* Taxi driver interface styles */
 
 .taxi-shell {
   max-width: 420px;
@@ -13,6 +13,10 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--space-4);
+}
+
+.taxi-topbar .lang-toggle {
+  margin-inline-start: var(--space-2);
 }
 
 .taxi-card {
