@@ -1,0 +1,36 @@
+/* تنسيقات خاصة بواجهة التكسي - هيكل أولي، تُبنى لاحقًا بالتفصيل */
+
+.taxi-shell {
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: var(--space-4);
+}
+
+.taxi-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.taxi-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-card);
+  margin-bottom: var(--space-4);
+}
+
+.taxi-report-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
