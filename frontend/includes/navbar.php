@@ -4,11 +4,17 @@
 if (!isset($pageTitleKey)) { $pageTitleKey = 'page_title_overview'; }
 ?>
 <header class="topbar">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <h1 data-i18n="<?= $pageTitleKey ?>">Dashboard</h1>
   <div class="topbar-actions">
-    <span class="date-picker" id="date-picker">May 31, 2026</span>
+    <span class="date-picker" id="current-date"></span>
+
     <span class="region-picker" data-i18n="all_regions">All Regions</span>
-    <span class="notif">🔔</span>
+
+  <span class="notif">
+      <i class="fa-regular fa-bell"></i>
+  </span>
+
     <div class="user-chip">
       <div class="avatar">A</div>
       <div class="user-info">
