@@ -10,6 +10,22 @@ let dashboardData = null;
 let charts = { trend: null, distribution: null, incidents: null };
 let leafletMap = null;
 
+function updateCurrentDate() {
+  const dateElement = document.getElementById("current-date");
+
+  const today = new Date();
+
+  const options = {
+   // weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  };
+
+  dateElement.textContent = today.toLocaleDateString("en-US", options);
+}
+updateCurrentDate();
+
 document.addEventListener("DOMContentLoaded", async () => {
   dashboardData = await fetchDashboardData();
   if (!dashboardData) return;

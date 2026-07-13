@@ -6,5 +6,7 @@
 <script src="../assets/js/i18n.js"></script>
 <script src="../assets/js/api.js"></script>
 <script src="../assets/js/dashboard.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons(); </script>
 </body>
 </html>
