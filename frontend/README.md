@@ -111,3 +111,13 @@ frontend/
 3. Charts use **Chart.js**.
 4. Every page supports PHP `include` — if you add a new page, copy the same
    structure from `dashboard/reports.php` (the simplest example).
+
+## Live AI dashboard connection
+
+1. Open a terminal in the project root.
+2. Activate the Python virtual environment.
+3. Run: `python ai/camera/camera_stream.py`
+4. Keep Flask running on `http://127.0.0.1:5000`.
+5. Open: `http://localhost/JSYP-ROYOSO/frontend/dashboard/index.php`
+
+The dashboard now reads from `ai/camera/jrip_data.db`. Every accepted camera detection is inserted into SQLite, so the data remains after stopping the camera or restarting the computer. The page refreshes its cards, map, priority list, and charts every five seconds.

@@ -1,17 +1,15 @@
 import csv
-import os
 from datetime import datetime
+from pathlib import Path
 
-
-FILE_NAME = "trip_data.csv"
+BASE_DIR = Path(__file__).resolve().parent
+FILE_NAME = BASE_DIR / "trip_data.csv"
 
 
 def save_trip_data(class_name, confidence, latitude, longitude, speed):
+    file_exists = FILE_NAME.is_file()
 
-    file_exists = os.path.isfile(FILE_NAME)
-
-    with open(FILE_NAME, "a", newline="") as file:
-
+    with FILE_NAME.open("a", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
 
         if not file_exists:
@@ -21,7 +19,7 @@ def save_trip_data(class_name, confidence, latitude, longitude, speed):
                 "confidence",
                 "latitude",
                 "longitude",
-                "speed"
+                "speed",
             ])
 
         writer.writerow([
@@ -30,5 +28,5 @@ def save_trip_data(class_name, confidence, latitude, longitude, speed):
             confidence,
             latitude,
             longitude,
-            speed
+            speed,
         ])

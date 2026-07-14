@@ -42,3 +42,5 @@ def save_detection(frame, class_name, confidence):
             round(confidence, 2),
             str(image_path)
         ])
+
+    return str(image_path)

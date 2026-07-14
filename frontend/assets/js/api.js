@@ -1,33 +1,31 @@
 /**
- * api.js
- * Unified data-fetching layer.
- * Currently: reads from data/mock.json (dummy data).
- * Once the backend (Node.js) is ready: set USE_MOCK to false and point
- * API_BASE at the real server. The API response shape must match
- * mock.json exactly (see README).
+ * Real JRIP data layer.
+ * The Flask AI service stores every accepted camera detection in SQLite
+ * and exposes the dashboard-ready JSON at /api/dashboard.
  */
-
-const USE_MOCK = true;
-const API_BASE = "http://localhost:3000/api"; // backend URL, once ready
-const MOCK_URL = "/JSYP-ROYOSO/frontend/data/mock.json"; // adjust to your XAMPP path
+const API_BASE = "http://127.0.0.1:5000/api";
 
 async function fetchDashboardData() {
   try {
-    if (USE_MOCK) {
-      const res = await fetch(MOCK_URL);
-      if (!res.ok) throw new Error("Could not load mock.json");
-      return await res.json();
-    }
-    const res = await fetch(`${API_BASE}/dashboard`);
-    if (!res.ok) throw new Error("Could not load data from the API");
+    const res = await fetch(`${API_BASE}/dashboard`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Dashboard API returned ${res.status}`);
     return await res.json();
   } catch (err) {
     console.error("[api.js] fetchDashboardData error:", err);
+
+    const container = document.getElementById("kpi-grid");
+    if (container) {
+      container.innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-label">AI service is offline</div>
+          <div class="kpi-value-row"><span class="kpi-value">—</span></div>
+          <span class="kpi-status trend-down">Run camera_stream.py on port 5000</span>
+        </div>`;
+    }
     return null;
   }
 }
 
-// Generic helper to submit a new incident report (used by the taxi app)
 async function postIncident(payload) {
   try {
     const res = await fetch(`${API_BASE}/incidents`, {

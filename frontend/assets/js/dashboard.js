@@ -30,6 +30,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   dashboardData = await fetchDashboardData();
   if (!dashboardData) return;
   renderAll();
+
+  // Keep the dashboard synchronized with detections saved by the camera.
+  setInterval(async () => {
+    const freshData = await fetchDashboardData();
+    if (freshData) {
+      dashboardData = freshData;
+      renderAll();
+    }
+  }, 5000);
 });
 
 // Re-render dynamic (mock.json-driven) content when the language toggles.
@@ -56,7 +65,7 @@ function renderKpis(kpis) {
 
   container.innerHTML = kpis
     .map((kpi) => {
-      const tr = tKpi(kpi);
+      const tr = { label: kpi.label || tKpi(kpi).label, status: kpi.status || tKpi(kpi).status };
       return `
       <div class="kpi-card">
         <div class="kpi-label">${tr.label}</div>
@@ -123,6 +132,11 @@ function renderMap(roads) {
       .bindPopup(`<strong>${tRoadName(road)}</strong><br>${t("road_health_label")} ${road.healthScore}/100`);
     leafletMap._markers.push(marker);
   });
+
+  if (roads.length > 0) {
+    const bounds = L.latLngBounds(roads.map((road) => [road.lat, road.lng]));
+    leafletMap.fitBounds(bounds.pad(0.25), { maxZoom: 16 });
+  }
 }
 
 /* ===== Alerts list ===== */
@@ -152,7 +166,7 @@ function renderTrendChart(trend) {
   const el = document.getElementById("trendChart");
   if (!el || !trend) return;
 
-  const labels = tLabelsList("trendLabels", trend.labels);
+  const labels = trend.labels;
 
   if (charts.trend) charts.trend.destroy();
   charts.trend = new Chart(el, {
