@@ -3,7 +3,9 @@ import time
 from flask import Flask, Response, jsonify, request
 from ultralytics import YOLO
 from trip_logger import save_trip_data
+from database import build_dashboard_payload, save_detection_record
 import csv
+from pathlib import Path
 
 from detection_logger import save_detection
 from duplicate_filter import should_save
@@ -16,7 +18,11 @@ def add_cors_headers(response):
     return response
 
 CAMERA_INDEX = 0
-model = YOLO("ai/models/best.pt")
+BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = BASE_DIR.parent.parent
+MODEL_PATH = PROJECT_ROOT / "ai" / "models" / "best.pt"
+TRIP_CSV_PATH = BASE_DIR / "trip_data.csv"
+model = YOLO(str(MODEL_PATH))
 
 latest_metrics = {
     "camera": "Disconnected",
@@ -83,7 +89,7 @@ def generate_frames():
 
                 if confidence >= 0.5:
                     if should_save(class_name):
-                        save_detection(frame, class_name, confidence)
+                        image_path = save_detection(frame, class_name, confidence)
 
                         save_trip_data(
                             class_name,
@@ -91,6 +97,16 @@ def generate_frames():
                             latest_metrics["latitude"],
                             latest_metrics["longitude"],
                             latest_metrics["speed"]
+                        )
+
+                        # Permanent source of truth for the dashboard.
+                        save_detection_record(
+                            class_name=class_name,
+                            confidence=confidence,
+                            latitude=latest_metrics["latitude"],
+                            longitude=latest_metrics["longitude"],
+                            speed=latest_metrics["speed"],
+                            image_path=image_path,
                         )
                     break
 
@@ -295,13 +311,29 @@ def stop_trip():
 
     return jsonify({"status": "stopped"})
 
+
+@app.route("/api/dashboard")
+def dashboard_api():
+    """Return persistent camera detections in the exact shape required by the dashboard."""
+    return jsonify(build_dashboard_payload())
+
+
+@app.route("/api/health")
+def api_health():
+    return jsonify({
+        "status": "ok",
+        "database": "jrip_data.db",
+        "camera": latest_metrics["camera"],
+        "ai": latest_metrics["ai"]
+    })
+
 @app.route("/potholes")
 def get_potholes():
 
     potholes = []
 
     try:
-        with open("trip_data.csv", "r") as file:
+        with open(TRIP_CSV_PATH, "r", encoding="utf-8") as file:
             reader = csv.DictReader(file)
 
             for row in reader:
@@ -323,7 +355,7 @@ def road_stats():
     potholes = []
 
     try:
-        with open("trip_data.csv", "r") as file:
+        with open(TRIP_CSV_PATH, "r", encoding="utf-8") as file:
 
             reader = csv.DictReader(file)
 

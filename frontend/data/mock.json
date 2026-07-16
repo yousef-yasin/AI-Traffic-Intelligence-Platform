@@ -42,5 +42,21 @@
   "alerts": [
     { "id": "a1", "type": "pothole", "title": "حفرة في الطريق", "location": "شارع المطار - باتجاه الشرق", "time": "منذ 30 دقيقة" },
     { "id": "a2", "type": "congestion", "title": "ازدحام مروري", "location": "دوار المحطة", "time": "منذ 45 دقيقة" }
+  ],
+
+  "drivers": [
+    { "id": "d1", "name": "محمد العبدالله", "plate": "12-JOR-556", "status": "online",  "camera": "active",   "area": "r1", "lastSync": "منذ دقيقتين",   "reportsCount": 34 },
+    { "id": "d2", "name": "سامر الزعبي",    "plate": "27-AMM-812", "status": "online",  "camera": "active",   "area": "r2", "lastSync": "منذ 5 دقائق",   "reportsCount": 21 },
+    { "id": "d3", "name": "خالد أبو حمدة",  "plate": "09-IRB-140", "status": "offline", "camera": "inactive", "area": "r3", "lastSync": "منذ ساعة",      "reportsCount": 12 },
+    { "id": "d4", "name": "أيمن الطراونة",  "plate": "44-ZRQ-903", "status": "online",  "camera": "active",   "area": "r4", "lastSync": "منذ دقيقة",     "reportsCount": 47 },
+    { "id": "d5", "name": "عمر الحوامدة",   "plate": "18-AMM-267", "status": "online",  "camera": "syncing",  "area": "r5", "lastSync": "الآن",           "reportsCount": 8  },
+    { "id": "d6", "name": "يوسف النمري",    "plate": "33-BAQ_411", "status": "offline", "camera": "inactive", "area": "r1", "lastSync": "منذ 3 ساعات",   "reportsCount": 5  }
+  ],
+
+  "simulationScenarios": [
+    { "id": "normal",  "roadDelta": [0, 1],   "eventRate": 0.15, "eventSeverityBias": "low" },
+    { "id": "rain",    "roadDelta": [-3, -1], "eventRate": 0.45, "eventSeverityBias": "high" },
+    { "id": "rush",    "roadDelta": [-1, 0],  "eventRate": 0.35, "eventSeverityBias": "medium" },
+    { "id": "closure", "roadDelta": [-2, 0],  "eventRate": 0.25, "eventSeverityBias": "medium" }
   ]
 }
