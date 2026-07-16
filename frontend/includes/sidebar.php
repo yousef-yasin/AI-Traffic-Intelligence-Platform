@@ -9,8 +9,8 @@ $navItems = [
         'icon' => 'layout-dashboard',
         'href' => 'index.php'
     ],
-    'roads' => [
-        'key'  => 'nav_roads',
+    'simulation' => [
+        'key'  => 'nav_simulation',
         'icon' => 'route',
         'href' => 'monitoring.php'
     ],
