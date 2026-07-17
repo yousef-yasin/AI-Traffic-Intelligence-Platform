@@ -1,40 +1,111 @@
 /**
  * api.js
- * Unified data-fetching layer.
- * Currently: reads from data/mock.json (dummy data).
- * Once the backend (Node.js) is ready: set USE_MOCK to false and point
- * API_BASE at the real server. The API response shape must match
- * mock.json exactly (see README).
+ * JRIP persistent dashboard data layer.
+ *
+ * The dashboard API runs independently on port 5001 and reads the permanent
+ * SQLite database. The camera can therefore stop without removing old data.
  */
 
-const USE_MOCK = true;
-const API_BASE = "http://localhost:3000/api"; // backend URL, once ready
-const MOCK_URL = "/JSYP-ROYOSO/frontend/data/mock.json"; // adjust to your XAMPP path
+const API_BASE = "http://127.0.0.1:5001/api";
+const DASHBOARD_CACHE_KEY = "jrip_dashboard_last_success";
 
-async function fetchDashboardData() {
+/**
+ * Save the latest successful dashboard response in localStorage.
+ */
+function saveDashboardCache(data) {
   try {
-    if (USE_MOCK) {
-      const res = await fetch(MOCK_URL);
-      if (!res.ok) throw new Error("Could not load mock.json");
-      return await res.json();
-    }
-    const res = await fetch(`${API_BASE}/dashboard`);
-    if (!res.ok) throw new Error("Could not load data from the API");
-    return await res.json();
+    localStorage.setItem(DASHBOARD_CACHE_KEY, JSON.stringify(data));
   } catch (err) {
-    console.error("[api.js] fetchDashboardData error:", err);
+    console.warn("[api.js] Could not cache dashboard data:", err);
+  }
+}
+
+/**
+ * Read the latest successful dashboard response from localStorage.
+ */
+function readDashboardCache() {
+  try {
+    const cached = localStorage.getItem(DASHBOARD_CACHE_KEY);
+    return cached ? JSON.parse(cached) : null;
+  } catch (err) {
+    console.warn("[api.js] Could not read cached dashboard data:", err);
     return null;
   }
 }
 
-// Generic helper to submit a new incident report (used by the taxi app)
+/**
+ * Fetch dashboard statistics from the permanent dashboard API.
+ */
+async function fetchDashboardData() {
+  try {
+    const res = await fetch(`${API_BASE}/dashboard`, {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`Dashboard API returned ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    saveDashboardCache(data);
+
+    return data;
+  } catch (err) {
+    console.error("[api.js] fetchDashboardData error:", err);
+
+    // Keep the latest successful data visible if the API stops.
+    const cachedData = readDashboardCache();
+
+    if (cachedData) {
+      console.warn("[api.js] Showing the last saved dashboard snapshot.");
+      return cachedData;
+    }
+
+    const container = document.getElementById("kpi-grid");
+
+    if (container) {
+      container.innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-label">Dashboard API is offline</div>
+
+          <div class="kpi-value-row">
+            <span class="kpi-value">—</span>
+          </div>
+
+          <span class="kpi-status trend-down">
+            Run api_server.py on port 5001
+          </span>
+        </div>
+      `;
+    }
+
+    return null;
+  }
+}
+
+/**
+ * Submit a new incident report.
+ * Used by the taxi or vehicle reporting application.
+ */
 async function postIncident(payload) {
   try {
     const res = await fetch(`${API_BASE}/incidents`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       body: JSON.stringify(payload),
     });
+
+    if (!res.ok) {
+      throw new Error(`Incident API returned ${res.status}`);
+    }
+
     return await res.json();
   } catch (err) {
     console.error("[api.js] postIncident error:", err);
