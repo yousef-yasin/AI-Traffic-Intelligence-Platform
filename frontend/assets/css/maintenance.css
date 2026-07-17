@@ -1,0 +1,338 @@
+/* ===================== MAINTENANCE PAGE ===================== */
+
+.maint-kpi-icon svg{
+  width:21px;
+  height:21px;
+  stroke-width:2.1;
+}
+
+.critical-icon svg{
+  width:17px;
+  height:17px;
+  stroke-width:2.2;
+}
+
+.maint-search .search-icon svg{
+  width:15px;
+  height:15px;
+  stroke:var(--color-text-muted);
+}
+
+.maint-search .search-icon{
+  display:flex;
+  align-items:center;
+}
+
+.maint-kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:20px;
+  margin-bottom:24px;
+}
+
+.maint-kpi-card{
+  background:var(--color-surface);
+  border:1px solid rgba(37,99,235,.08);
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 4px 12px rgba(15,23,42,.05);
+  transition:.25s ease;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.maint-kpi-card:hover{
+  transform:translateY(-3px);
+  border-color:#2563eb;
+  box-shadow:0 12px 28px rgba(37,99,235,.12);
+}
+
+.maint-kpi-icon{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+  flex-shrink:0;
+}
+
+.maint-kpi-icon.total{ background:rgba(37,99,235,.1); color:var(--color-primary); }
+.maint-kpi-icon.critical{ background:rgba(239,68,68,.1); color:var(--color-priority-high); }
+.maint-kpi-icon.score{ background:rgba(245,158,11,.1); color:var(--color-priority-medium); }
+.maint-kpi-icon.budget{ background:rgba(34,197,94,.1); color:var(--color-priority-low); }
+
+.maint-kpi-body{
+  min-width:0;
+}
+
+.maint-kpi-body .kpi-label{
+  margin-bottom:6px;
+}
+
+.maint-kpi-body .kpi-value-row{
+  margin-bottom:0;
+}
+
+@media (max-width:1200px){
+  .maint-kpi-grid{
+    grid-template-columns:repeat(2, 1fr);
+  }
+}
+
+@media (max-width:600px){
+  .maint-kpi-grid{
+    grid-template-columns:1fr;
+  }
+  .maint-kpi-card{
+    padding:16px;
+  }
+}
+
+.maint-toolbar{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.maint-search{
+  position:relative;
+  flex:1;
+  min-width:220px;
+}
+
+.maint-search input{
+  width:100%;
+  padding:10px 14px 10px 38px;
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-sm);
+  background:var(--color-surface);
+  font-size:13.5px;
+}
+
+html[dir="rtl"] .maint-search input{
+  padding:10px 38px 10px 14px;
+}
+
+.maint-search .search-icon{
+  position:absolute;
+  top:50%;
+  left:12px;
+  transform:translateY(-50%);
+  color:var(--color-text-muted);
+  font-size:13px;
+  pointer-events:none;
+}
+
+html[dir="rtl"] .maint-search .search-icon{
+  left:auto;
+  right:12px;
+}
+
+.maint-filter{
+  padding:10px 14px;
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-sm);
+  background:var(--color-surface);
+  font-size:13px;
+  color:var(--color-text);
+  cursor:pointer;
+  min-width:150px;
+}
+
+.maint-table-wrap{
+  overflow-x:auto;
+}
+
+.maint-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13.5px;
+}
+
+.maint-table thead th{
+  text-align:start;
+  padding:12px 14px;
+  color:var(--color-text-muted);
+  font-weight:700;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  border-bottom:1px solid var(--color-border);
+  white-space:nowrap;
+}
+
+.maint-table tbody td{
+  padding:14px;
+  border-bottom:1px solid var(--color-border);
+  vertical-align:middle;
+}
+
+.maint-table tbody tr:hover{
+  background:rgba(37,99,235,.04);
+}
+
+.maint-table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.maint-road-cell{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+}
+
+.maint-score-cell{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:120px;
+}
+
+.maint-score-bar{
+  flex:1;
+  height:6px;
+  border-radius:999px;
+  background:var(--color-bg);
+  overflow:hidden;
+}
+
+.maint-score-bar-fill{
+  height:100%;
+  border-radius:999px;
+}
+
+.badge-status{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:11.5px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.badge-status.pending{ background:rgba(239,68,68,.12); color:var(--color-priority-high); }
+.badge-status.scheduled{ background:rgba(245,158,11,.12); color:var(--color-priority-medium); }
+.badge-status.in_progress{ background:rgba(37,99,235,.12); color:var(--color-primary); }
+.badge-status.completed{ background:rgba(34,197,94,.12); color:var(--color-priority-low); }
+
+.maint-view-btn{
+  border:1px solid var(--color-border);
+  background:var(--color-surface);
+  padding:6px 14px;
+  border-radius:var(--radius-sm);
+  font-size:12.5px;
+  font-weight:700;
+  cursor:pointer;
+  color:var(--color-text);
+}
+
+.maint-view-btn:hover{
+  border-color:var(--color-primary);
+  color:var(--color-primary);
+}
+
+.maint-empty-row td{
+  text-align:center;
+  padding:32px 14px;
+  color:var(--color-text-muted);
+}
+
+/* Critical roads panel */
+.critical-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.critical-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid rgba(239,68,68,.18);
+  background:rgba(239,68,68,.04);
+}
+
+.critical-icon{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:rgba(239,68,68,.12);
+  color:var(--color-priority-high);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  font-size:15px;
+}
+
+.critical-info{
+  flex:1;
+  min-width:0;
+}
+
+.critical-info strong{
+  display:block;
+  font-size:13.5px;
+  margin-bottom:2px;
+}
+
+.critical-info small{
+  color:var(--color-text-muted);
+  font-size:12px;
+}
+
+.critical-score{
+  font-weight:800;
+  font-size:15px;
+  color:var(--color-priority-high);
+}
+
+/* Recent activity panel */
+.activity-list{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.activity-item{
+  display:flex;
+  gap:12px;
+}
+
+.activity-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--color-primary);
+  margin-top:6px;
+  flex-shrink:0;
+}
+
+.activity-info strong{
+  display:block;
+  font-size:13px;
+  margin-bottom:2px;
+}
+
+.activity-info small{
+  color:var(--color-text-muted);
+  font-size:12px;
+}
+
+@media (max-width:768px){
+  .maint-toolbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .maint-filter{
+    min-width:0;
+  }
+}
