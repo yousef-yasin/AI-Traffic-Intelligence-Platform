@@ -6,10 +6,6 @@
 
 **Smarter Roads. Safer Future. Better Decisions.**
 
-[![Status](https://img.shields.io/badge/status-prototype--in--development-blue)](#project-status)
-[![AI](https://img.shields.io/badge/AI-computer%20vision%20%2B%20decision%20intelligence-brightgreen)](#the-ai-core)
-[![Simulation](https://img.shields.io/badge/simulation-SUMO-orange)](#digital-twin-and-traffic-simulation)
-[![Platform](https://img.shields.io/badge/platform-web%20%2B%20mobile-0A2540)](#platform-modules)
 
 </div>
 
@@ -1036,8 +1032,7 @@ For collaboration, pilots, research, or institutional partnerships:
 - **Project:** JRIP — Jordan Road Intelligence Platform
 - **Team:** Yousef Yasin and Ruaa Hussin
 - **Location:** Jordan
-- **Email:** `<ADD_EMAIL>`
-- **Repository:** `<ADD_REPOSITORY_URL>`
+
 
 ---
 
